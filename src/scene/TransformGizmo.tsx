@@ -94,6 +94,7 @@ export default function TransformGizmo() {
   const checkPieceBelowSurface = useDesignStore((s) => s.checkPieceBelowSurface);
   const magnetSnapPiece = useDesignStore((s) => s.magnetSnapPiece);
   const magnetSnapJoint = useDesignStore((s) => s.magnetSnapJoint);
+  const setGizmoDragging = useDesignStore((s) => s.setGizmoDragging);
 
   const [group, setGroup] = useState<THREE.Group | null>(null);
 
@@ -148,7 +149,12 @@ export default function TransformGizmo() {
     localOffset.z,
   ]);
 
+  const handleMouseDown = () => {
+    setGizmoDragging(true);
+  };
+
   const handleMouseUp = () => {
+    setGizmoDragging(false);
     if (!group || !target) return;
 
     // Snapped pivot world position after drag
@@ -250,6 +256,7 @@ export default function TransformGizmo() {
           showX
           showY
           showZ
+          onMouseDown={handleMouseDown}
           onMouseUp={handleMouseUp}
           size={0.9}
         />

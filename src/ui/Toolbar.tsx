@@ -85,6 +85,13 @@ function HelpDialog({ onClose }: { onClose: () => void }) {
               na cíl. Při kliknutí na prvek se přichytí k jeho nejbližšímu
               rohu/středu, při kliknutí na plochu na zvolené místo.
             </p>
+            <p>
+              <strong>Snap pomocník</strong> se zobrazí při tažení gizmem
+              i v režimu „Přichytit k bodu": <span className="text-amber-300">žluté
+              kuličky</span> = rohy (priorita), <span className="text-orange-300">oranžové</span> =
+              středy hran (průsečík ploch), drobné světlé tečky = středy stěn.
+              Klik na prvek si vybere nejbližší z těch bodů.
+            </p>
           </div>
         </div>
       </div>

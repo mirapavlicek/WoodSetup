@@ -83,6 +83,8 @@ type State = {
   screwWarning: ScrewWarning | null;
   /** Když je false, kamera (OrbitControls) je zamknutá – brání pohybu při kliknutí na prvek. */
   orbitEnabled: boolean;
+  /** True, když uživatel právě táhne za gizmo (pro zobrazení snap pomocníku). */
+  gizmoDragging: boolean;
   /**
    * Kotva (X/Y/Z ∈ {-1, 0, 1}), kolem které se prvek otáčí v gizmu.
    * Default [0,0,0] = střed. Hodnoty -1/+1 umístí pivot na hranu / roh.
@@ -139,6 +141,7 @@ type Actions = {
   magnetSnapJoint: (jointId: string) => void;
 
   setOrbitEnabled: (v: boolean) => void;
+  setGizmoDragging: (v: boolean) => void;
 
   /** Spustí ruční režim „bod k bodu" pro daný prvek a kotvu. */
   startAttachPicking: (pieceId: string, anchor: Anchor) => void;
@@ -207,6 +210,7 @@ const initialState: State = {
   screwWarning: null,
   orbitEnabled: true,
   rotationPivot: [0, 0, 0],
+  gizmoDragging: false,
 };
 
 /** Práh v mm – noření menší než tahle hodnota se ignoruje (numerický šum při snapu). */
@@ -307,6 +311,7 @@ export const useDesignStore = create<DesignStore>((set, get) => ({
   setOverlapMode: (v) => set({ overlapMode: v }),
   setLinkConnected: (v) => set({ linkConnected: v }),
   setOrbitEnabled: (v) => set({ orbitEnabled: v }),
+  setGizmoDragging: (v) => set({ gizmoDragging: v }),
   setRotationPivot: (anchor) => set({ rotationPivot: anchor }),
 
   applyGroupTransform: (updates) => {

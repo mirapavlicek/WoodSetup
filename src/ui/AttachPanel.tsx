@@ -101,8 +101,13 @@ export default function AttachPanel({ piece }: { piece: Piece }) {
       </button>
 
       {active && (
-        <div className="text-[10px] text-stone-400 leading-snug">
-          Klikněte ve scéně na cílový prvek nebo plochu. Pro zrušení stiskněte Esc.
+        <div className="text-[10px] text-stone-400 leading-snug space-y-1">
+          <div>
+            Klikněte ve scéně na cílový prvek. Žluté tečky = <strong>rohy</strong>,
+            oranžové = <strong>středy hran</strong> (průsečík ploch), bílé =
+            středy stěn. Klik se chytne na nejbližší z nich.
+          </div>
+          <div>Pro zrušení stiskněte Esc.</div>
         </div>
       )}
     </div>

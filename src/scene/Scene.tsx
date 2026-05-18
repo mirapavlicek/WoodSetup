@@ -15,6 +15,7 @@ import JointMesh from './Joint';
 import TransformGizmo from './TransformGizmo';
 import AnchorMarker from './AnchorMarker';
 import PivotMarker from './PivotMarker';
+import SnapPointsOverlay from './SnapPointsOverlay';
 import { groundBounds } from '../utils/ground';
 
 /** Exponuje GL kontext do refu kvůli exportu PNG. */
@@ -99,6 +100,7 @@ export default function Scene({ rendererRef }: Props) {
       ))}
 
       <TransformGizmo />
+      <SnapPointsOverlay />
       <AnchorMarker />
       <PivotMarker />
 
