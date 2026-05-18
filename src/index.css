@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background: #0f0d0a;
+    color: #f5efe2;
+    font-family: 'Inter', system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+}
+
+@layer components {
+  .panel {
+    @apply bg-stone-900/95 border border-stone-700/70 backdrop-blur-sm rounded-md shadow-lg;
+  }
+  .panel-header {
+    @apply px-3 py-2 text-xs font-semibold uppercase tracking-wider text-stone-300 border-b border-stone-700/60 flex items-center justify-between;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-1 rounded-md px-2.5 py-1.5 text-sm font-medium transition-colors disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+  .btn-primary {
+    @apply btn bg-wood-500 hover:bg-wood-400 text-stone-900;
+  }
+  .btn-secondary {
+    @apply btn bg-stone-800 hover:bg-stone-700 text-stone-100 border border-stone-700;
+  }
+  .btn-ghost {
+    @apply btn hover:bg-stone-800 text-stone-200;
+  }
+  .input {
+    @apply w-full bg-stone-950 border border-stone-700 rounded px-2 py-1 text-sm text-stone-100 focus:border-wood-400 focus:outline-none;
+  }
+  .label {
+    @apply text-xs uppercase tracking-wide text-stone-400 mb-1;
+  }
+}
+
+/* Hide scrollbar styling */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #1c1917;
+}
+::-webkit-scrollbar-thumb {
+  background: #44403c;
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #57534e;
+}
