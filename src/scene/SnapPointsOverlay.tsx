@@ -1,7 +1,8 @@
-import { useMemo } from 'react';
+import { useMemo, useRef } from 'react';
 import * as THREE from 'three';
+import { useFrame, useThree } from '@react-three/fiber';
 import { useDesignStore } from '../store/designStore';
-import { worldAnchorPosition } from '../utils/anchor';
+import { closestAnchorOfPiece, worldAnchorPosition } from '../utils/anchor';
 import type { Vec3 } from '../types';
 
 /**
@@ -98,6 +99,89 @@ function FaceDot({ pos }: { pos: Vec3 }) {
   );
 }
 
+/**
+ * Halo, který každý frame přepočítá nejbližší kotvu prvku pod kurzorem
+ * a usadí se na ni – uživatel vidí přesně, kam klik dopadne.
+ */
+function SnapHoverHalo({ sourceId }: { sourceId: string | null }) {
+  const { raycaster, scene, mouse, camera } = useThree();
+  const pieces = useDesignStore((s) => s.pieces);
+  const ref = useRef<THREE.Group>(null);
+
+  useFrame(() => {
+    const g = ref.current;
+    if (!g) return;
+
+    raycaster.setFromCamera(mouse, camera);
+    const hits = raycaster.intersectObjects(scene.children, true);
+
+    let pieceId: string | null = null;
+    let hitPoint: THREE.Vector3 | null = null;
+    for (const h of hits) {
+      // Snap halo reaguje jen na prvky (ne na spojky, podlahu apod.)
+      const pid = (h.object.userData as { pieceId?: string } | undefined)
+        ?.pieceId;
+      if (pid) {
+        pieceId = pid;
+        hitPoint = h.point;
+        break;
+      }
+    }
+    if (!pieceId || !hitPoint || pieceId === sourceId) {
+      g.visible = false;
+      return;
+    }
+    const piece = pieces.find((p) => p.id === pieceId);
+    if (!piece) {
+      g.visible = false;
+      return;
+    }
+    const closest = closestAnchorOfPiece(piece, [
+      hitPoint.x,
+      hitPoint.y,
+      hitPoint.z,
+    ]);
+    if (!closest) {
+      g.visible = false;
+      return;
+    }
+    g.position.set(closest.position[0], closest.position[1], closest.position[2]);
+    g.visible = true;
+  });
+
+  return (
+    <group ref={ref} visible={false}>
+      <mesh raycast={NULL_RAYCAST} renderOrder={1001}>
+        <sphereGeometry args={[16, 18, 18]} />
+        <meshBasicMaterial
+          color="#fef3c7"
+          depthTest={false}
+          transparent
+          opacity={0.95}
+        />
+      </mesh>
+      <mesh raycast={NULL_RAYCAST} renderOrder={1000}>
+        <sphereGeometry args={[28, 16, 16]} />
+        <meshBasicMaterial
+          color="#fde047"
+          depthTest={false}
+          transparent
+          opacity={0.35}
+        />
+      </mesh>
+      <mesh raycast={NULL_RAYCAST} renderOrder={999}>
+        <sphereGeometry args={[44, 16, 16]} />
+        <meshBasicMaterial
+          color="#facc15"
+          depthTest={false}
+          transparent
+          opacity={0.12}
+        />
+      </mesh>
+    </group>
+  );
+}
+
 export default function SnapPointsOverlay() {
   const attachPicking = useDesignStore((s) => s.attachPicking);
   const gizmoDragging = useDesignStore((s) => s.gizmoDragging);
@@ -122,6 +206,9 @@ export default function SnapPointsOverlay() {
 
   if (!active) return null;
 
+  const sourceId =
+    attachPicking?.pieceId ?? (gizmoDragging ? selectedId : null);
+
   return (
     <group>
       {allDots.map((d, i) => {
@@ -130,6 +217,7 @@ export default function SnapPointsOverlay() {
         if (d.type === 'edge') return <EdgeDot key={key} pos={d.pos} />;
         return <FaceDot key={key} pos={d.pos} />;
       })}
+      <SnapHoverHalo sourceId={sourceId} />
     </group>
   );
 }
