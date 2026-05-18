@@ -348,7 +348,15 @@ function renderSteps(snapshot: DesignSnapshot): StepInfo[] {
     const desc: string[] = [];
     if (profile)
       desc.push(`Rozměr: ${formatDims(profile.width, profile.height, piece.length)}`);
-    desc.push(`Materiál: ${profile?.material ?? 'dřevo'}`);
+    const matLabel =
+      profile?.material === 'metal'
+        ? 'kov'
+        : profile?.material === 'aluminum'
+          ? 'hliník'
+          : profile?.material === 'concrete'
+            ? 'beton'
+            : 'dřevo';
+    desc.push(`Materiál: ${matLabel}`);
     steps.push({
       number: stepNum,
       title: titleParts,

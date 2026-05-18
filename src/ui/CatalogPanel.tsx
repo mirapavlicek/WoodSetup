@@ -13,6 +13,7 @@ const LUMBER_LABELS: Record<LumberCategory, string> = {
   deska: 'Desky (OSB, překližka)',
   lprofil: 'L-profily',
   uprofil: 'U-profily',
+  'patka-beton': 'Betonové patky / základy',
 };
 
 const JOINT_LABELS: Record<JointCategory, string> = {
@@ -128,12 +129,17 @@ export default function CatalogPanel() {
                         {p.name}
                       </span>
                       <span className="block text-[10px] text-stone-400">
-                        {p.width}×{p.height} mm •{' '}
+                        {p.material === 'concrete'
+                          ? `${p.width}×${p.defaultLength}×${p.height} mm (š×h×v)`
+                          : `${p.width}×${p.height} mm`}
+                        {' • '}
                         {p.material === 'wood'
                           ? 'dřevo'
                           : p.material === 'aluminum'
                             ? 'hliník'
-                            : 'kov'}
+                            : p.material === 'concrete'
+                              ? 'beton'
+                              : 'kov'}
                       </span>
                     </span>
                     <span className="text-wood-300 opacity-0 group-hover:opacity-100">

@@ -10,9 +10,10 @@ Webová aplikace pro **DIY návrh dřevěných a kovových konstrukcí ve 3D**. 
 
 ### Modelování
 - 3D scéna se zemí definovanou **čtyřmi rohy** (libovolný čtyřúhelník, presety) a vlastním rastrem.
-- Katalog **profilů**: hranoly, prkna, latě, fošny, OSB / překližka / MDF, kovové jekly, trubky, L/U profily a kompletní řada hliníkových profilů (jekl, T-drážka, trubky, L/U).
-- Katalog **spojek**: vruty, hřebíky, závitové tyče, dřevěné čepy, hmoždinky a chemické kotvy, úhelníky (i vyztužené), plotny, trámové botky, patní kotvy, krokvové / pásové / T spony, vazníkové desky.
+- Katalog **profilů**: hranoly, prkna, latě, fošny, OSB / překližka / MDF, kovové jekly, trubky, L/U profily, kompletní řada hliníkových profilů (jekl, T-drážka, trubky, L/U) **a betonové patky / základy** (150–400 mm, různé výšky).
+- Katalog **spojek**: vruty, hřebíky, závitové tyče, dřevěné čepy, hmoždinky a chemické kotvy, úhelníky (i vyztužené), plotny, trámové botky, patní kotvy (do betonu i přišroubovací), krokvové / pásové / T spony, vazníkové desky.
 - Manipulace pomocí 3D gizma (`G` posun, `R` rotace) s rastrem a snapem rotace (15° / 45° / 90°). Výchozí 45° drží prvky osově zarovnané.
+- **Betonové patky** stojí svisle a slouží jako základ. V režimu *Překrytí* magnet posadí dřevěný / kovový sloup přímo na vrch patky; pro reálnou kotvu doplň spojku „Patní kotva U" nebo „Patka rektifikační", které se na čelo patky samy posadí.
 
 ### Snapping a chytrá montáž
 - **Magnet ⌖** přilepí prvek k nejbližšímu sousedovi (doraz / překrytí).

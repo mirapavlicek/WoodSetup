@@ -617,6 +617,78 @@ export const LUMBER_PROFILES: LumberProfile[] = [
     description: 'Větší hliníkový úhelník.',
   },
 
+  // --- Betonové patky / základové bloky ---
+  // Konvence pro beton: `width × defaultLength` = půdorys (X × Z),
+  //                     `height` = svislá výška (Y) – patka tak po přidání
+  //                     stojí vzhledem ke scéně rovnou tak, jak má (spodek na zemi).
+  // Dřevěné nebo kovové sloupy se pak na ni dají magnetem přichytit shora.
+  {
+    id: 'beton-patka-150',
+    name: 'Betonová patka 150×150×500',
+    category: 'patka-beton',
+    material: 'concrete',
+    width: 150,
+    height: 500,
+    defaultLength: 150,
+    color: '#b8b3a8',
+    description: 'Lehký základový blok pro plot, lavičku, drobné stavby.',
+  },
+  {
+    id: 'beton-patka-200',
+    name: 'Betonová patka 200×200×600',
+    category: 'patka-beton',
+    material: 'concrete',
+    width: 200,
+    height: 600,
+    defaultLength: 200,
+    color: '#b4afa3',
+    description: 'Standardní bodový základ pod sloupy pergoly / přístřešku.',
+  },
+  {
+    id: 'beton-patka-250',
+    name: 'Betonová patka 250×250×750',
+    category: 'patka-beton',
+    material: 'concrete',
+    width: 250,
+    height: 750,
+    defaultLength: 250,
+    color: '#b0aba0',
+    description: 'Větší bodový základ pro pergoly a altány.',
+  },
+  {
+    id: 'beton-patka-300',
+    name: 'Betonová patka 300×300×800',
+    category: 'patka-beton',
+    material: 'concrete',
+    width: 300,
+    height: 800,
+    defaultLength: 300,
+    color: '#aca79c',
+    description: 'Nosný základ pro velké hranoly 120×120 / 140×140.',
+  },
+  {
+    id: 'beton-patka-400-cube',
+    name: 'Betonový blok 400×400×400',
+    category: 'patka-beton',
+    material: 'concrete',
+    width: 400,
+    height: 400,
+    defaultLength: 400,
+    color: '#a8a399',
+    description: 'Krycí betonová kostka – plot, garáže, lavice.',
+  },
+  {
+    id: 'beton-patka-prefab-200x200',
+    name: 'Prefa patka s kotvou 200×200×500',
+    category: 'patka-beton',
+    material: 'concrete',
+    width: 200,
+    height: 500,
+    defaultLength: 200,
+    color: '#b6b1a6',
+    description: 'Prefabrikovaná patka pro plotové sloupky a sloupky pergol.',
+  },
+
   // --- Hliníkové U-profily ---
   {
     id: 'al-uprofil-30',

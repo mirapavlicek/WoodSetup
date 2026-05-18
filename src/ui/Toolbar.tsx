@@ -73,6 +73,13 @@ function HelpDialog({ onClose }: { onClose: () => void }) {
               a patky se posadí na čelo a zarovnají dlouhou osu prvku.
             </p>
             <p>
+              <strong>Betonové patky</strong> najdeš v katalogu Profily (sekce{' '}
+              <em>Betonové patky / základy</em>). Stojí svisle a slouží jako
+              základ – v režimu <em>Překrytí</em> magnet posadí dřevěný sloup
+              přímo na patku. Pro přesnou kotvu použij spojku „Patní kotva U"
+              nebo „Patka rektifikační" – sama se posadí na čelo patky.
+            </p>
+            <p>
               <strong>Přichytit k bodu</strong> (v Properties panelu) –
               přesně určete zdrojový bod prvku (X/Y/Z) a klikněte ve scéně
               na cíl. Při kliknutí na prvek se přichytí k jeho nejbližšímu

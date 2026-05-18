@@ -20,6 +20,7 @@ const MATERIAL_LABELS: Record<Material, string> = {
   wood: 'dřevo',
   metal: 'kov',
   aluminum: 'hliník',
+  concrete: 'beton',
 };
 
 export default function CutList() {
@@ -73,10 +74,13 @@ export default function CutList() {
   const totals = useMemo(() => {
     const sumOf = (m: Material) =>
       rows.filter((r) => r.material === m).reduce((s, r) => s + r.totalLength, 0);
+    const countOf = (m: Material) =>
+      rows.filter((r) => r.material === m).reduce((s, r) => s + r.count, 0);
     return {
       wood: sumOf('wood'),
       metal: sumOf('metal'),
       aluminum: sumOf('aluminum'),
+      concreteCount: countOf('concrete'),
       pieces: pieces.length,
       joints: joints.length,
     };
@@ -105,6 +109,9 @@ export default function CutList() {
     lines.push(
       `Dřevo: ${formatLength(totals.wood, units)} • Kov: ${formatLength(totals.metal, units)} • Hliník: ${formatLength(totals.aluminum, units)}`,
     );
+    if (totals.concreteCount > 0) {
+      lines.push(`Betonové patky: ${totals.concreteCount} ks`);
+    }
     try {
       await navigator.clipboard.writeText(lines.join('\n'));
       setCopied(true);
@@ -186,6 +193,12 @@ export default function CutList() {
               Kov: {formatLength(totals.metal, units)}
               <br />
               Hliník: {formatLength(totals.aluminum, units)}
+              {totals.concreteCount > 0 && (
+                <>
+                  <br />
+                  Betonové patky: {totals.concreteCount} ks
+                </>
+              )}
               <br />
               Prvků: {totals.pieces}, spojek: {totals.joints}
             </div>

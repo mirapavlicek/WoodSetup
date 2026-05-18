@@ -51,6 +51,14 @@ export default function WoodPiece({ piece }: Props) {
         metalness: 0.95,
       });
     }
+    if (mat === 'concrete') {
+      return new THREE.MeshStandardMaterial({
+        color,
+        roughness: 0.98,
+        metalness: 0,
+        flatShading: true,
+      });
+    }
     return new THREE.MeshStandardMaterial({
       color,
       roughness: 0.85,

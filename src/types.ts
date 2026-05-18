@@ -11,7 +11,7 @@ export type GroundCorners = [Vec2, Vec2, Vec2, Vec2];
  */
 export type Anchor = [number, number, number];
 
-export type Material = 'wood' | 'metal' | 'aluminum';
+export type Material = 'wood' | 'metal' | 'aluminum' | 'concrete';
 
 export type LumberCategory =
   | 'hranol'
@@ -21,7 +21,8 @@ export type LumberCategory =
   | 'trubka'
   | 'deska'
   | 'lprofil'
-  | 'uprofil';
+  | 'uprofil'
+  | 'patka-beton';
 
 export type LumberProfile = {
   id: string;
