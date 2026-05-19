@@ -10,3 +10,7 @@ dist-ssr
 *.log
 tsconfig.tsbuildinfo
 
+# Electron build artefakty
+release/
+build/icon-*.png
+

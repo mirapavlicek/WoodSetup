@@ -39,21 +39,46 @@ Webová aplikace pro **DIY návrh dřevěných a kovových konstrukcí ve 3D**. 
 
 ## Spuštění
 
+### Desktop aplikace (doporučená cesta)
+
+Stáhni si připravený installer ze [stránky Releases](https://github.com/mirapavlicek/WoodSetup/releases):
+
+- **macOS**: `WoodSetup-*-mac-arm64.dmg` (Apple Silicon) nebo `-mac-x64.dmg` (Intel)
+- **Windows**: `WoodSetup-*-win-x64.exe` (instalátor) nebo „portable" .exe
+- **Linux**: `WoodSetup-*-linux-x64.deb` (Ubuntu/Debian) nebo `.AppImage` (univerzální)
+
+> Aplikace **není code-signed** (nemám placený certifikát). Při prvním spuštění tě
+> systém upozorní na neznámého vývojáře:
+> - **macOS**: pravým tlačítkem na .app → *Otevřít*, potvrď v dialogu.
+> - **Windows**: SmartScreen → *More info* → *Run anyway*.
+> - **Linux**: `chmod +x WoodSetup-*.AppImage && ./WoodSetup-*.AppImage`.
+
+### Vývojářský režim (přes Node)
+
 Potřebuješ Node 18+.
 
 ```bash
 npm install
-npm run dev
+npm run dev          # Vite dev server na http://localhost:5173
+# nebo desktop verze v dev módu (otevře Electron okno s HMR):
+npm run electron:dev
 ```
 
-Aplikace běží na <http://localhost:5173>.
-
-### Produkční build
+### Lokální produkční build
 
 ```bash
-npm run build
-npm run preview
+npm run build         # Vite → dist/
+npm run preview       # statický server pro dist/
+
+# Desktop instalátory do release/ – jen pro tvou platformu:
+npm run electron:build         # podle systému, kde to běží
+npm run electron:build:mac     # dmg + zip (Apple Silicon + Intel)
+npm run electron:build:win     # nsis + portable
+npm run electron:build:linux   # deb + AppImage
 ```
+
+> Pro instalátory pro **cizí platformy** (např. .exe na macOS) je nejjednodušší
+> nechat to udělat GitHub Actions – viz [Release / CI](#release--ci).
 
 ---
 
@@ -76,11 +101,33 @@ npm run preview
 
 ## Struktura
 
-- `src/scene/` – 3D komponenty (`Scene`, `Ground`, `WoodPiece`, `Joint`, `TransformGizmo`, `HoleMarker`, `PivotMarker`).
+- `src/scene/` – 3D komponenty (`Scene`, `Ground`, `WoodPiece`, `Joint`, `TransformGizmo`, `HoleMarker`, `PivotMarker`, `SnapPointsOverlay`).
 - `src/ui/` – UI panely (`Toolbar`, `CatalogPanel`, `PropertiesPanel`, `CutList`, `SceneSettings`, varovné bannery).
 - `src/store/designStore.ts` – Zustand store s undo / redo historií a všemi akcemi.
 - `src/data/` – katalog profilů (`lumber.ts`), spojek (`joints.ts`) a děr (`holes.ts`).
 - `src/utils/` – geometrie, snap, anchor, kontroly průniku vrutů, persistence, export STL / PNG / JSON / IKEA návodu.
+- `electron/` – Electron main proces (`main.cjs`) + preload (`preload.cjs`).
+- `.github/workflows/release.yml` – CI build pro mac/win/linux.
+
+## Release / CI
+
+Repo má **GitHub Actions** workflow `Release`, který na push gitového tagu `vX.Y.Z`
+zbuilduje aplikaci pro všechny tři platformy a vytvoří draft GitHub Release s přiloženými installer balíčky.
+
+Postup pro nový release:
+
+```bash
+# 1. Bump verze v package.json (např. 0.1.0 → 0.2.0)
+# 2. Commit změn
+git add . && git commit -m "Release v0.2.0"
+
+# 3. Vytvoř tag a push
+git tag v0.2.0
+git push && git push --tags
+```
+
+Po pár minutách najdeš v záložce *Releases* nový draft s `.dmg`, `.exe`, `.deb`
+a `.AppImage` ke stažení. Stačí ho otevřít, upravit popis a publikovat.
 
 ---
 

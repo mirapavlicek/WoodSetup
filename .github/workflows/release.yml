@@ -1,0 +1,107 @@
+name: Release
+
+# Spustí se po push tagu vX.Y.Z (např. `git tag v0.1.0 && git push --tags`).
+# Pro každou platformu sestaví installer/balíček a nahraje ho jako draft GitHub Release.
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    name: Build (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: macos-latest
+            script: electron:build:mac
+            artifact_glob: |
+              release/*.dmg
+              release/*.zip
+          - os: windows-latest
+            script: electron:build:win
+            artifact_glob: |
+              release/*.exe
+          - os: ubuntu-latest
+            script: electron:build:linux
+            artifact_glob: |
+              release/*.deb
+              release/*.AppImage
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build & package (${{ matrix.os }})
+        run: npm run ${{ matrix.script }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # Vypnout pokus o code-signing v CI (žádné certifikáty).
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: woodsetup-${{ matrix.os }}
+          path: |
+            release/*.dmg
+            release/*.zip
+            release/*.exe
+            release/*.deb
+            release/*.AppImage
+          if-no-files-found: ignore
+
+  release:
+    name: Publish GitHub Release
+    needs: build
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/tags/v')
+    steps:
+      - name: Download all artifacts
+        uses: actions/download-artifact@v4
+        with:
+          path: dist-artifacts
+          merge-multiple: true
+
+      - name: List downloaded files
+        run: ls -la dist-artifacts
+
+      - name: Create draft release
+        uses: softprops/action-gh-release@v2
+        with:
+          draft: true
+          generate_release_notes: true
+          name: WoodSetup ${{ github.ref_name }}
+          body: |
+            ## WoodSetup ${{ github.ref_name }}
+
+            Stáhni si balíček pro svůj systém:
+
+            - **macOS**: `WoodSetup-*-mac-universal.dmg` (univerzální Intel + Apple Silicon)
+            - **Windows**: `WoodSetup-*-win-x64.exe` (instalátor nebo *portable* verze)
+            - **Linux**: `.deb` (Ubuntu/Debian) nebo `.AppImage` (univerzální)
+
+            > ⚠️ Aplikace **není code-signed** – při prvním spuštění tě macOS / Windows upozorní
+            > na neznámého vývojáře. Otevři ji přes pravé tlačítko → *Otevřít*, nebo si
+            > tu varování potvrď v *System Settings → Privacy & Security*.
+
+            Licence: [PolyForm Noncommercial 1.0.0](https://polyformproject.org/licenses/noncommercial/1.0.0/) – jen pro nekomerční použití.
+          files: dist-artifacts/*
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
