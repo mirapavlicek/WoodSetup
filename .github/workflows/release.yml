@@ -12,6 +12,12 @@ on:
 permissions:
   contents: write
 
+# Vynutí Node.js 24 runtime ve všech JavaScript actions (checkout, setup-node,
+# upload-artifact, ...). GitHub od června 2026 stejně node 20 vypíná, tohle
+# odstraňuje deprecation warning.
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: 'true'
+
 jobs:
   build:
     name: Build (${{ matrix.os }})
