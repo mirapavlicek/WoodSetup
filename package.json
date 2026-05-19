@@ -1,7 +1,7 @@
 {
   "name": "woodsetup",
   "private": true,
-  "version": "0.1.0",
+  "version": "0.1.1",
   "type": "module",
   "description": "Webová aplikace pro DIY návrh dřevěných a kovových konstrukcí v 3D.",
   "license": "SEE LICENSE IN LICENSE",
